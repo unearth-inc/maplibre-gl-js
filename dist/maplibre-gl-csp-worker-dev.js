@@ -29528,10 +29528,10 @@ function getSizeData(tileZoom, value) {
 }
 function evaluateSizeForFeature(sizeData, { uSize, uSizeT }, { lowerSize, upperSize }) {
     if (sizeData.kind === 'source') {
-        return lowerSize / SIZE_PACK_FACTOR;
+        return lowerSize;
     }
     else if (sizeData.kind === 'composite') {
-        return interpolate.number(lowerSize / SIZE_PACK_FACTOR, upperSize / SIZE_PACK_FACTOR, uSizeT);
+        return interpolate.number(lowerSize, upperSize, uSizeT);
     }
     return uSize;
 }
@@ -31988,20 +31988,14 @@ function addTextVertices(bucket, anchor, shapedText, imageMap, layer, textAlongL
     let textSizeData = null;
     if (sizeData.kind === 'source') {
         textSizeData = [
-            SIZE_PACK_FACTOR * layer.layout.get('text-size').evaluate(feature, {})
+            layer.layout.get('text-size').evaluate(feature, {})
         ];
-        if (textSizeData[0] > MAX_PACKED_SIZE) {
-            warnOnce(`${bucket.layerIds[0]}: Value for "text-size" is >= ${MAX_GLYPH_ICON_SIZE}. Reduce your "text-size".`);
-        }
     }
     else if (sizeData.kind === 'composite') {
         textSizeData = [
-            SIZE_PACK_FACTOR * sizes.compositeTextSizes[0].evaluate(feature, {}, canonical),
-            SIZE_PACK_FACTOR * sizes.compositeTextSizes[1].evaluate(feature, {}, canonical)
+            sizes.compositeTextSizes[0].evaluate(feature, {}, canonical),
+            sizes.compositeTextSizes[1].evaluate(feature, {}, canonical)
         ];
-        if (textSizeData[0] > MAX_PACKED_SIZE || textSizeData[1] > MAX_PACKED_SIZE) {
-            warnOnce(`${bucket.layerIds[0]}: Value for "text-size" is >= ${MAX_GLYPH_ICON_SIZE}. Reduce your "text-size".`);
-        }
     }
     bucket.addSymbols(bucket.text, glyphQuads, textSizeData, textOffset, textAlongLine, feature, writingMode, anchor, lineArray.lineStartIndex, lineArray.lineLength, placedIconIndex, canonical);
     // The placedSymbolArray is used at render time in drawTileSymbols

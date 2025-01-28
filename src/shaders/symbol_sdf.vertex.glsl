@@ -64,10 +64,10 @@ void main() {
     highp float segment_angle = -a_projected_pos[2];
     float size;
 
-    if (!u_is_size_zoom_constant && !u_is_size_feature_constant) {
-        size = mix(a_size_min, a_size[1], u_size_t) / 128.0;
+     if (!u_is_size_zoom_constant && !u_is_size_feature_constant) {
+        size = mix(a_size_min, a_size[1], u_size_t) / (u_is_text ? 1.0 : 128.0);
     } else if (u_is_size_zoom_constant && !u_is_size_feature_constant) {
-        size = a_size_min / 128.0;
+        size = a_size_min / (u_is_text ? 1.0 : 128.0);
     } else {
         size = u_size;
     }

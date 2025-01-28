@@ -93,9 +93,9 @@ function evaluateSizeForFeature(sizeData: SizeData,
         upperSize: number;
     }): number {
     if (sizeData.kind === 'source') {
-        return lowerSize / SIZE_PACK_FACTOR;
+        return lowerSize;
     } else if (sizeData.kind === 'composite') {
-        return interpolates.number(lowerSize / SIZE_PACK_FACTOR, upperSize / SIZE_PACK_FACTOR, uSizeT);
+        return interpolates.number(lowerSize, upperSize, uSizeT);
     }
     return uSize;
 }
